@@ -1,7 +1,5 @@
 import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
-import { AppController } from './controllers/app.controller';
-import { AppService } from './services/app.service';
 import { AuthModule } from './resolvers/auth/auth.module';
 import { UserModule } from './resolvers/user/user.module';
 import { PostModule } from './resolvers/post/post.module';
@@ -14,11 +12,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        autoSchemaFile:
-          configService.get('GRAPHQL_SCHEMA_DEST') || './src/schema.graphql',
+        autoSchemaFile: configService.get('GRAPHQL_SCHEMA_DEST') || './src/schema.graphql',
         debug: configService.get('GRAPHQL_DEBUG') === '1' ? true : false,
-        playground:
-          configService.get('PLAYGROUND_ENABLE') === '1' ? true : false,
+        playground: configService.get('PLAYGROUND_ENABLE') === '1' ? true : false,
         context: ({ req }) => ({ req })
       }),
       inject: [ConfigService]
@@ -27,7 +23,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     PostModule
   ],
-  controllers: [AppController],
-  providers: [AppService, AppResolver, DateScalar]
+  providers: [AppResolver, DateScalar]
 })
 export class AppModule {}
